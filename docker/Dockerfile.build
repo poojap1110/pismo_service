@@ -1,0 +1,40 @@
+FROM matchmove/golang-supervisord:latest
+
+ENV APP_NAME integration-svc-aub
+ENV APP_PORT 8080
+ENV APP_HOST 0.0.0.0
+ENV APP_DIR $GOPATH/src/bitbucket.org/matchmove/integration-svc-aub
+ENV APP_ENV_FILE .env
+ENV LOG_DIR /log/server
+ENV KEY_DIR /keys
+ENV SWAGGER_DIR /docs/aub/
+
+ARG PRIVATE_KEY_MM
+ARG PUBLIC_KEY_AUB
+
+RUN mkdir -p $APP_DIR && mkdir -p $LOG_DIR
+RUN mkdir -p $KEY_DIR && mkdir -p $SWAGGER_DIR
+
+
+
+EXPOSE ${APP_PORT}
+
+ADD . ${APP_DIR}
+
+RUN echo $PRIVATE_KEY_MM | sed -r 's/"//g;s/\|/\n/g' > $KEY_DIR/sample_key
+RUN echo $PUBLIC_KEY_AUB | sed -r 's/"//g;s/\|/\n/g' > $KEY_DIR/sample_key.pub
+
+WORKDIR ${APP_DIR}
+
+COPY /docs/* $SWAGGER_DIR
+
+
+RUN mv ${APP_NAME} /go/bin/${APP_NAME}
+
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+RUN rm -rf $APP_DIR
+
+WORKDIR /
+
+ENTRYPOINT /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
