@@ -13,19 +13,19 @@ import (
 	"strings"
 	"time"
 
-	"/home/pooja/git/pismo-service/app/errs"
+	"github.com/frozentech/go-tools/secure"
+	"github.com/pooja1110/pismo-service/app/errs"
 
-	"bitbucket.org/matchmove/integration-svc-aub/modules/container"
-	"bitbucket.org/matchmove/integration-svc-aub/modules/entity"
+	"github.com/pooja1110/pismo-service/modules/container"
+	"github.com/pooja1110/pismo-service/modules/entity"
 
-	"bitbucket.org/matchmove/integration-svc-aub/modules/helper"
+	"github.com/pooja1110/pismo-service/modules/helper"
 
 	"github.com/gorilla/schema"
 
 	logs "bitbucket.org/matchmove/fmt-logs"
 	gorm "bitbucket.org/matchmove/go-model"
 	"bitbucket.org/matchmove/go-resource/out"
-	"bitbucket.org/matchmove/go-tools/secure"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
